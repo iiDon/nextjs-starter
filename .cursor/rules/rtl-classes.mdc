@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+---
+- Global: `<html lang="ar" dir="rtl">`
+- Tailwind: use `ms`, `me`, `ps`, `pe` instead of `ml`, `mr`, `pl`, `pr`
+- Text alignment: `text-start`, `text-end` instead of `text-left`, `text-right`

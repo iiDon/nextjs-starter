@@ -1,0 +1,46 @@
+{
+  "Common": {
+    "Language": "Language"
+  },
+  "Error": {
+    "You are not logged in": "You are not logged in",
+    "This action is not allowed": "This action is not allowed",
+    "Too many requests": "Too many requests",
+    "Internal server error": "Internal server error"
+  },
+  "Pages": {
+    "Auth": {
+      "InvalidLogin": "Invalid login"
+    },
+    "Dashboard": {
+      "Sidebar": {
+        "Dashboard": "Dashboard",
+        "Examples": "Examples"
+      },
+      "Examples": {
+        "Examples": "Examples",
+        "No_examples_found": "No examples found",
+        "Create_Example": "Create Example",
+        "Edit_Example": "Edit Example",
+        "Delete_Example": "Delete Example",
+        "Title": "Title",
+        "Content": "Content",
+        "Enter_title": "Enter title",
+        "Enter_content": "Enter content",
+        "Create": "Create",
+        "Update": "Update",
+        "Delete": "Delete",
+        "Cancel": "Cancel",
+        "Creating": "Creating...",
+        "Updating": "Updating...",
+        "Deleting": "Deleting...",
+        "Update_description": "Update the example title and content.",
+        "Delete_confirmation": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+        "Example_created": "Example created successfully!",
+        "Example_updated": "Example updated successfully!",
+        "Example_deleted": "Example deleted successfully!",
+        "Invalid_data": "Invalid data"
+      }
+    }
+  }
+}

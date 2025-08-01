@@ -1,0 +1,46 @@
+{
+  "Common": {
+    "Language": "اللغة"
+  },
+  "Error": {
+    "You are not logged in": "أنت غير مسجل",
+    "This action is not allowed": "هذا الإجراء غير مسموح به",
+    "Too many requests": "لقد تجاوزت الحد المسموح به للطلبات",
+    "Internal server error": "خطأ في الخادم"
+  },
+  "Pages": {
+    "Auth": {
+      "InvalidLogin": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    },
+    "Dashboard": {
+      "Sidebar": {
+        "Dashboard": "لوحة التحكم",
+        "Examples": "أمثلة"
+      },
+      "Examples": {
+        "Examples": "أمثلة",
+        "No_examples_found": "لا يوجد أمثلة",
+        "Create_Example": "إنشاء مثال",
+        "Edit_Example": "تعديل المثال",
+        "Delete_Example": "حذف المثال",
+        "Title": "العنوان",
+        "Content": "المحتوى",
+        "Enter_title": "أدخل العنوان",
+        "Enter_content": "أدخل المحتوى",
+        "Create": "إنشاء",
+        "Update": "تحديث",
+        "Delete": "حذف",
+        "Cancel": "إلغاء",
+        "Creating": "جاري الإنشاء...",
+        "Updating": "جاري التحديث...",
+        "Deleting": "جاري الحذف...",
+        "Update_description": "قم بتحديث عنوان ومحتوى المثال.",
+        "Delete_confirmation": "هل أنت متأكد من حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+        "Example_created": "تم إنشاء المثال بنجاح!",
+        "Example_updated": "تم تحديث المثال بنجاح!",
+        "Example_deleted": "تم حذف المثال بنجاح!",
+        "Invalid_data": "البيانات غير صالحة"
+      }
+    }
+  }
+}

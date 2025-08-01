@@ -1,0 +1,424 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# New-Page Creation Workflow
+
+**Table of Contents**
+
+1. Overview
+2. Prisma (Empty for now)
+3. Zod Schema
+4. API Actions & Route Handlers
+5. React-Query Hook
+6. Page & Screen Components
+
+---
+
+## 1. Overview
+
+This workflow outlines the end-to-end steps to scaffold a new page in your Next.js application, from schema definition to page components. Follow each section in order to maintain consistency and best practices across the codebase.
+
+> **Translation Note:** Always translate every key in the root `messages/` folder for each supported locale, ensuring no missing translations.
+
+This workflow outlines the end-to-end steps to scaffold a new page in your Next.js application, from schema definition to page components. Follow each section in order to maintain consistency and best practices across the codebase.
+
+---
+
+## 2. Prisma
+
+Your database schema files are located under `prisma/schema/` and may be split across multiple `.prisma` files—one file per logical grouping or model. Before adding or updating any model:
+
+1. **Inspect existing tables/models**: Review the current schema to identify if a model already exists for your resource.
+2. **If the model/table is missing**: Draft a new model definition, then **ask for the required fields** before writing it. This ensures you capture all necessary properties.
+
+Example folder structure:
+
+```
+prisma/
+├── schema.prisma      # main config & datasource
+└── models/
+    ├── user.prisma
+    ├── example.prisma
+    └── ...
+```
+
+---
+
+## 3. Zod Schema
+
+Create a file in `src/schemas/` named after your resource (e.g. `example.schema.ts`), exporting validation schemas and their inferred TypeScript types. You can define multiple schemas (create, delete, update, read) in the same file:
+
+```ts
+// src/schemas/example.schema.ts
+import { z } from "zod";
+import { Prisma } from "@/configs/prisma/generated";
+
+export const createExampleSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1),
+});
+
+export type CreateExampleType = z.infer<typeof createExampleSchema>;
+
+// Define other schemas as needed:
+export const updateExampleSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1).optional(),
+  content: z.string().min(1).optional(),
+});
+export type UpdateExampleType = z.infer<typeof updateExampleSchema>;
+
+export const deleteExampleSchema = z.object({
+  id: z.string().uuid(),
+});
+export type DeleteExampleType = z.infer<typeof deleteExampleSchema>;
+
+export const readExampleSchema = z.object({
+  id: z.string().uuid(),
+});
+export type ReadExampleType = z.infer<typeof readExampleSchema>;
+
+// If you need a TypeScript type including related Prisma relations:
+export type ExampleWithUser = Prisma.ExampleGetPayload<{
+  include: { User: true };
+}>;
+```
+
+---
+
+## 4. API Actions & Route Handlers
+
+### Mutations
+
+All server-side mutations (Create, Update, Delete) go under `src/app/actions/` (never use actions for GET data). Always protect routes with `await guard([...])`; passing an empty array allows any authenticated user.
+
+Example:
+
+```ts
+"use server";
+
+import { prisma } from "@/configs/prisma/prisma";
+import { returnError } from "@/lib/errors/returnError";
+import {
+  createExampleSchema,
+  CreateExampleType,
+} from "@/schemas/example.schema";
+import { guard } from "../services/guard";
+import { getLocale, getTranslations } from "next-intl/server";
+
+export const createExample = async (dto: CreateExampleType) => {
+  try {
+    const session = await guard(["ADMIN"]);
+    const locale = await getLocale();
+    const t = await getTranslations({
+      locale,
+      namespace: "Pages.Dashboard.Examples",
+    });
+    const { success, data } = createExampleSchema.safeParse(dto);
+
+    if (!success) {
+      return {
+        success: false,
+        message: t("Invalid_data"),
+      };
+    }
+
+    console.log("Session:", session);
+
+    const example = await prisma.example.create({
+      data: {
+        ...data,
+      },
+    });
+
+    return {
+      success: true,
+      data: example,
+    };
+  } catch (error) {
+    return returnError(error);
+  }
+};
+```
+
+### Route Handlers (GET)
+
+All GET requests should be handled via route handlers under `src/app/api/...`. Include rate limiting, locale, translations, and guard protection.
+
+Example:
+
+```ts
+// src/app/api/example/route.ts
+import { guard } from "@/app/actions/services/guard";
+import { throwError } from "@/lib/errors/throwError";
+import { getLocale } from "@/app/actions/services/getLocale";
+import { NextResponse } from "next/server";
+import { limiter } from "@/lib/rate-limiter";
+import { getIp } from "@/app/actions/services/getIp";
+import { prisma } from "@/configs/prisma/prisma";
+import { getTranslations } from "next-intl/server";
+import { CustomizedError } from "@/lib/errors/errors";
+
+export async function GET(request: Request) {
+  try {
+    const ip = getIp(request);
+    await limiter.consume(ip);
+    const locale = await getLocale(request);
+    await guard(["ADMIN"], locale);
+    const t = await getTranslations({
+      locale,
+      namespace: "Pages.Dashboard.Examples",
+    });
+
+    // Optional custom error
+    // throw new CustomizedError(t("Internal_server_error"), 500);
+
+    const examples = await prisma.example.findMany({ include: { User: true } });
+    if (examples[0]?.title === "test") {
+      throw new CustomizedError(t("No_examples_found"), 404);
+    }
+
+    return NextResponse.json(examples);
+  } catch (error) {
+    return throwError(error);
+  }
+}
+```
+
+---
+
+## 5. React-Query Hook
+
+Create your data hooks under `src/hooks/data/useExample.ts`. Use Axios for GET requests and handle mutations via actions. Only use `toast` for mutation results, not within components.
+
+```ts
+// src/hooks/data/useExample.ts
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/axios";
+import {
+  CreateExampleType,
+  DeleteExampleType,
+  ExampleWithUser,
+  UpdateExampleType,
+} from "@/schemas/example.schema";
+import {
+  createExample,
+  updateExample,
+  deleteExample,
+} from "@/app/actions/admin/example.action";
+import { toast } from "sonner";
+import { queryClient } from "@/configs/react-query";
+import { useTranslations } from "next-intl";
+
+// GET hook using Axios
+export const useGetExamples = () =>
+  useQuery<ExampleWithUser[]>({
+    queryKey: ["examples"],
+    queryFn: async () => {
+      const response = await api.get<ExampleWithUser[]>("/api/example");
+      return response.data;
+    },
+  });
+
+// CREATE mutation
+export const useCreateExample = () => {
+  const t = useTranslations("Pages.Dashboard.Examples");
+  return useMutation(
+    (dto: CreateExampleType) =>
+      createExample(dto).then((res) => {
+        if (!res.success) throw new Error(res.message);
+        return res.data;
+      }),
+    {
+      onError: (error: Error) => {
+        toast.error(error.message);
+      },
+      onSuccess: () => {
+        toast.success(t("Example_created"));
+        queryClient.invalidateQueries(["examples"]);
+      },
+    }
+  );
+};
+
+// UPDATE mutation
+export const useUpdateExample = () => {
+  const t = useTranslations("Pages.Dashboard.Examples");
+  return useMutation(
+    (dto: UpdateExampleType) =>
+      updateExample(dto).then((res) => {
+        if (!res.success) throw new Error(res.message);
+        return res.data;
+      }),
+    {
+      onError: (error: Error) => {
+        toast.error(error.message);
+      },
+      onSuccess: () => {
+        toast.success(t("Example_updated"));
+        queryClient.invalidateQueries(["examples"]);
+      },
+    }
+  );
+};
+
+// DELETE mutation
+export const useDeleteExample = () => {
+  const t = useTranslations("Pages.Dashboard.Examples");
+  return useMutation(
+    (dto: DeleteExampleType) =>
+      deleteExample(dto).then((res) => {
+        if (!res.success) throw new Error(res.message);
+        return res.data;
+      }),
+    {
+      onError: (error: Error) => {
+        toast.error(error.message);
+      },
+      onSuccess: () => {
+        toast.success(t("Example_deleted"));
+        queryClient.invalidateQueries(["examples"]);
+      },
+    }
+  );
+};
+```
+
+## 6. Page & Screen Components
+
+### 6.1 Page File (Server)
+
+You can also fetch data directly within the server component—bypassing a separate route handler—which is often preferred for simplicity and performance. For example:
+
+```tsx
+// src/app/[locale]/dashboard/examples/page.tsx
+import { Examples } from "@/components/screens/dashboard/examples/Examples";
+import { pick } from "lodash";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import React from "react";
+import { auth } from "@/configs/auth";
+import { redirect } from "next/navigation";
+import { prisma } from "@/configs/prisma/prisma";
+
+const ExamplesPage = async () => {
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const session = await auth();
+
+  if (!session) {
+    redirect("/");
+  }
+
+  const examples = await prisma.example.findMany({
+    include: { User: true },
+  });
+
+  return (
+    <NextIntlClientProvider
+      locale={locale}
+      messages={pick(messages, ["Pages.Dashboard.Examples"])}
+    >
+      <Examples examples={examples} />
+    </NextIntlClientProvider>
+  );
+};
+
+export default ExamplesPage;
+```
+
+`tsx`
+// src/app/\[locale]/dashboard/examples/page.tsx
+import { Examples } from "@/components/screens/dashboard/examples/Examples";
+import { pick } from "lodash";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import React from "react";
+
+const ExamplesPage = async () => {
+const locale = await getLocale();
+const messages = await getMessages();
+
+return (
+\<NextIntlClientProvider
+locale={locale}
+messages={pick(messages, \["Pages.Dashboard.Examples"])}
+\> <Examples /> </NextIntlClientProvider>
+);
+};
+
+export default ExamplesPage;
+
+````
+
+### 6.2 Screen Components (Client)
+Create a folder: `src/components/screens/dashboard/examples/` with these files:
+
+- **Examples.tsx** — main list + layout
+- **CreateExample.tsx** — creation form
+- **EditExample.tsx** — edit dialog
+- **DeleteExample.tsx** — delete confirmation
+- **skeleton.tsx** — loading placeholder
+
+#### Examples.tsx
+```tsx
+"use client";
+import React from "react";
+import { useGetExamples } from "@/hooks/data/useExample";
+import ExampleSkeleton from "./skeleton";
+import CreateExample from "./CreateExample";
+import EditExample from "./EditExample";
+import DeleteExample from "./DeleteExample";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
+
+export const Examples = () => {
+  const t = useTranslations("Pages.Dashboard.Examples");
+  const { data: examples, isLoading, error } = useGetExamples();
+
+  if (isLoading) return <ExampleSkeleton />;
+  if (error || !examples || examples.length === 0) {
+    return (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold">{t("Examples")}</h1>
+        <p className="text-sm text-muted-foreground">
+          {error?.message || t("No_examples_found")}
+        </p>
+        <CreateExample />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <h1 className="text-2xl font-bold">{t("Examples")}</h1>
+      <CreateExample />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {examples.map((example) => (
+          <Card key={example.id}>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                {example.title}
+                <div className="flex gap-2">
+                  <EditExample example={example} />
+                  <DeleteExample example={example} />
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                {example.content}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+````
+
+*(Implement the other files similarly by extracting `EditExample`, `DeleteExample`, and `CreateExample` components into their own files, and a `skeleton.tsx` for the loading state.)*

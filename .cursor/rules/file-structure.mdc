@@ -1,0 +1,48 @@
+---
+alwaysApply: true
+---
+
+. 📂 nextjs-starter (pruned)
+├── 📄 README.md  <!-- Project overview and instructions -->
+├── 📂 messages/  <!-- Localization files -->
+│   ├── 📄 ar.json  <!-- Arabic translations -->
+│   └── 📄 en.json  <!-- English translations -->
+├── 📄 next.config.ts  <!-- Next.js configuration -->
+├── 📄 package.json  <!-- Dependencies & scripts -->
+├── 📄 postcss.config.mjs  <!-- Tailwind/PostCSS setup -->
+├── 📂 prisma/
+│   └── 📂 schema/  <!-- Database models -->
+│       ├── 📄 example.prisma  <!-- Example model definition -->
+│       ├── 📄 user.prisma     <!-- User model definition -->
+│       └── 📄 schema.prisma   <!-- Main Prisma config -->
+├── 📂 src/
+│   ├── 📂 app/
+│   │   └── 📂 \[locale]/dashboard/examples/
+│   │       └── 📄 page.tsx  <!-- Server page component (fetch & render) -->
+│   ├── 📂 app/actions/
+│   │   ├── 📂 admin/
+│   │   │   └── 📄 example.action.ts  <!-- Create/Update/Delete mutations -->
+│   │   └── 📂 services/
+│   │       ├── 📄 guard.ts     <!-- Route protection -->
+│   │       ├── 📄 getLocale.ts <!-- Locale helper -->
+│   │       └── 📄 getIp.ts     <!-- IP helper -->
+│   ├── 📂 app/api/
+│   │   └── 📂 example/
+│   │       └── 📄 route.ts  <!-- GET examples route handler -->
+│   ├── 📂 hooks/
+│   │   └── 📂 data/
+│   │       └── 📄 useExample.ts  <!-- React-Query hooks -->
+│   ├── 📂 components/
+│   │   └── 📂 screens/dashboard/examples/
+│   │       ├── 📄 Examples.tsx       <!-- Main list + layout -->
+│   │       ├── 📄 CreateExample.tsx  <!-- Create form dialog -->
+│   │       ├── 📄 EditExample.tsx    <!-- Update form dialog -->
+│   │       ├── 📄 DeleteExample.tsx  <!-- Delete confirmation -->
+│   │       └── 📄 skeleton.tsx       <!-- Loading placeholder -->
+│   ├── 📂 lib/
+│   │   └── 📄 axios.ts  <!-- Axios instance for API calls -->
+│   └── 📂 configs/
+│       ├── 📄 auth.ts          <!-- Auth helper for server pages -->
+│       ├── 📄 prisma.ts        <!-- Prisma client setup -->
+│       └── 📄 react-query.ts   <!-- React-Query client config -->
+└── 📄 tsconfig.json  <!-- TypeScript configuration -->

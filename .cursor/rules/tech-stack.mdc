@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+---
+
+# Tech Stack
+
+This document outlines the core technologies used across the Forsah platform:
+
+* **Next.js** with **TypeScript** for a powerful, type‑safe React framework.
+* **Tailwind CSS** (via [shadcn/ui](https://ui.shadcn.com/)) for utility‑first styling and prebuilt UI primitives.
+* **React Query** for data fetching, caching, and synchronization.
+* **Zod** + **@hookform/resolvers/zod** for schema‑based validation in both server actions and form handling.
+* **lucide‑react** for lightweight, customizable SVG icons.
+* **sonner** for toast notifications and user feedback.
+
+All packages are installed and configured per project standards, ensuring consistency and maintainability.

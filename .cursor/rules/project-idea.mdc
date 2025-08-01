@@ -1,0 +1,108 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Example Project Overview
+
+This document serves as a template for outlining the purpose, architecture, and features of your project. Fill in the sections below with the specific details for your application.
+
+## 1. Purpose
+
+Describe the primary goals and target audiences.
+
+- **Audience 1**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Audience 2**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Additional audience(s)**:
+
+  - ***
+  - ***
+
+## 2. Architecture
+
+Outline the main components or modules of the platform and their interactions.
+
+1. **Module / Service 1**
+
+   - Responsibilities:
+
+     - ***
+     - ***
+
+   - Communication:
+
+     - ***
+
+2. **Module / Service 2**
+
+   - Responsibilities:
+
+     - ***
+     - ***
+
+   - Communication:
+
+     - ***
+
+3. **Module / Service 3** (if applicable)
+
+   - Responsibilities:
+
+     - ***
+     - ***
+
+   - Communication:
+
+     - ***
+
+## 3. Key Features
+
+List the core functionalities and features your project will provide.
+
+- **Feature 1**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Feature 2**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Feature 3**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Additional Features**:
+
+  - ***
+  - ***
+
+## 4. Data Flow & Integration Points
+
+Detail how data moves between components and any external integrations.
+
+- **Data Flow 1**:
+
+  - Source: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+  - Destination: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+  - Protocol / Format: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+- **Integration 1**:
+
+  - Service: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+  - Purpose: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+  - Auth / Security: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+## 5. Technical Stack
+
+Specify the technologies, languages, and tools for each layer.
+
+- **Frontend**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Backend**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Database**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+- **Infrastructure / DevOps**: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+## 6. Next Steps
+
+Outline immediate actions and points for discussion.
+
+1. Gather detailed requirements for \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+2. Define database schema for \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+3. Draft API endpoints for \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+4. Create initial UI mockups for \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+5. Setup development environments and pipelines
+
+---
+
+_Note: Remove or add sections as needed to tailor the document to your project’s scope._
