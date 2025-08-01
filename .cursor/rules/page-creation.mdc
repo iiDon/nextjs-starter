@@ -21,6 +21,8 @@ alwaysApply: false
 
 This workflow outlines the end-to-end steps to scaffold a new page in your Next.js application, from schema definition to page components. Follow each section in order to maintain consistency and best practices across the codebase.
 
+Note: Design Should be so modern and perfect
+
 > **Translation Note:** Always translate every key in the root `messages/` folder for each supported locale, ensuring no missing translations.
 
 This workflow outlines the end-to-end steps to scaffold a new page in your Next.js application, from schema definition to page components. Follow each section in order to maintain consistency and best practices across the codebase.
