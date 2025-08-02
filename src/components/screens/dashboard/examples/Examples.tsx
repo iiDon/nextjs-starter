@@ -47,7 +47,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
 import React from "react";
 import { ExampleWithUser } from "@/schemas/example.schema";
 
@@ -68,7 +67,6 @@ const EditExample = ({ example }: { example: ExampleWithUser }) => {
   const onSubmit = (data: UpdateExampleType) => {
     updateExample(data, {
       onSuccess: () => {
-        toast.success(t("Example_updated"));
         setOpen(false);
       },
     });
@@ -81,55 +79,53 @@ const EditExample = ({ example }: { example: ExampleWithUser }) => {
           <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-             <DialogContent className="sm:max-w-[425px]">
-         <DialogHeader>
-           <DialogTitle>{t("Edit_Example")}</DialogTitle>
-           <DialogDescription>
-             {t("Update_description")}
-           </DialogDescription>
-         </DialogHeader>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{t("Edit_Example")}</DialogTitle>
+          <DialogDescription>{t("Update_description")}</DialogDescription>
+        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                         <FormField
-               control={form.control}
-               name="title"
-               render={({ field }) => (
-                 <FormItem>
-                   <FormLabel>{t("Title")}</FormLabel>
-                   <FormControl>
-                     <Input placeholder={t("Enter_title")} {...field} />
-                   </FormControl>
-                   <FormMessage />
-                 </FormItem>
-               )}
-             />
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("Title")}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t("Enter_title")} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-             <FormField
-               control={form.control}
-               name="content"
-               render={({ field }) => (
-                 <FormItem>
-                   <FormLabel>{t("Content")}</FormLabel>
-                   <FormControl>
-                     <Textarea placeholder={t("Enter_content")} {...field} />
-                   </FormControl>
-                   <FormMessage />
-                 </FormItem>
-               )}
-             />
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("Content")}</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder={t("Enter_content")} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                         <DialogFooter>
-               <Button
-                 type="button"
-                 variant="outline"
-                 onClick={() => setOpen(false)}
-               >
-                 {t("Cancel")}
-               </Button>
-               <Button type="submit" disabled={isPending}>
-                 {isPending ? t("Updating") : t("Update")}
-               </Button>
-             </DialogFooter>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpen(false)}
+              >
+                {t("Cancel")}
+              </Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? t("Updating") : t("Update")}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>
@@ -142,14 +138,7 @@ const DeleteExample = ({ example }: { example: ExampleWithUser }) => {
   const { mutate: deleteExample, isPending } = useDeleteExample();
 
   const handleDelete = () => {
-    deleteExample(
-      { id: example.id },
-      {
-        onSuccess: () => {
-          toast.success(t("Example_deleted"));
-        },
-      }
-    );
+    deleteExample({ id: example.id });
   };
 
   return (
@@ -159,19 +148,19 @@ const DeleteExample = ({ example }: { example: ExampleWithUser }) => {
           <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
-             <AlertDialogContent>
-         <AlertDialogHeader>
-           <AlertDialogTitle>{t("Delete_Example")}</AlertDialogTitle>
-           <AlertDialogDescription>
-             {t("Delete_confirmation", { title: example.title })}
-           </AlertDialogDescription>
-         </AlertDialogHeader>
-         <AlertDialogFooter>
-           <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
-           <AlertDialogAction onClick={handleDelete} disabled={isPending}>
-             {isPending ? t("Deleting") : t("Delete")}
-           </AlertDialogAction>
-         </AlertDialogFooter>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t("Delete_Example")}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("Delete_confirmation", { title: example.title })}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete} disabled={isPending}>
+            {isPending ? t("Deleting") : t("Delete")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

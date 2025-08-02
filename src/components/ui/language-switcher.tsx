@@ -12,7 +12,13 @@ import { LOCALES } from "@/configs/i18n/defaults";
 import { usePathname, useRouter } from "@/configs/i18n/navigation";
 import { Globe } from "lucide-react";
 
-export default function LanguageSwitcher() {
+type LanguageSwitcherProps = {
+  onlyIcon?: boolean;
+};
+
+export default function LanguageSwitcher({
+  onlyIcon = false,
+}: LanguageSwitcherProps) {
   const t = useTranslations("Common");
   const locale = useLocale();
   const router = useRouter();
@@ -42,11 +48,19 @@ export default function LanguageSwitcher() {
         }}
         defaultValue={locale}
       >
-        <SelectTrigger className="h-10 px-3 py-2 bg-background border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent group">
-          <SelectValue
-            placeholder={t("Language")}
-            className="flex-1 text-left"
-          />
+        <SelectTrigger
+          className={`h-10 px-3 py-2 bg-background border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 focus:ring-2 focus:ring-primary focus:border-transparent group ${
+            onlyIcon ? "[&>svg:last-child]:hidden" : ""
+          }`}
+        >
+          {onlyIcon ? (
+            <Globe className="w-5 h-5 text-muted-foreground" />
+          ) : (
+            <SelectValue
+              placeholder={t("Language")}
+              className="flex-1 text-left"
+            />
+          )}
         </SelectTrigger>
 
         <SelectContent className="bg-background border border-border rounded-lg shadow-lg p-1 z-50">
