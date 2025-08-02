@@ -37,11 +37,7 @@ export function AppSidebar() {
   const { data: session } = useSession();
 
   return (
-    <Sidebar
-      side={locale === "ar" ? "right" : "left"}
-      className="border-e"
-      collapsible="icon"
-    >
+    <Sidebar side={locale === "ar" ? "right" : "left"} className="border-e">
       <SidebarHeader className="border-b bg-muted/30">
         <div className="flex flex-row items-center gap-x-4 py-6 px-4">
           <div className="relative">
