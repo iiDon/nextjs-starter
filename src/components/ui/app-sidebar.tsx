@@ -136,12 +136,12 @@ function SidebarGroupRender({ group }: { group: SidebarGroupType }) {
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                   </SidebarMenuItem>
-                  <CollapsibleContent className="mt-2  rounded-md p-2 bg-muted/20">
+                  <CollapsibleContent className="mt-2 border-s-2 ms-4 p-2 bg-muted/20">
                     <SidebarMenu className="space-y-0.5">
                       {accessibleSubitems.map((subItem, subIndex) => {
                         const isActive = pathname === subItem.url;
                         return (
-                          <SidebarMenuItem key={subIndex}>
+                          <SidebarMenuItem className="" key={subIndex}>
                             <Link
                               href={subItem.url}
                               className={cn(
